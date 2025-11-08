@@ -1,0 +1,10 @@
+body { font-family: system-ui, Arial, sans-serif; margin: 0; padding: 0 16px; }
+header nav { display: flex; gap: 12px; padding: 12px 0; }
+header nav a { text-decoration: none; }
+hr { margin: 0 0 16px 0; }
+.messages { padding: 8px 12px; background: #f6f8fa; border: 1px solid #e2e8f0; }
+h1, h2, h3 { margin: 16px 0 8px; }
+table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+th, td { border: 1px solid #e2e8f0; padding: 8px; text-align: left; }
+button, .btn { padding: 8px 12px; border: 1px solid #cbd5e1; background: #fff; cursor: pointer; }
+form { display: grid; gap: 8px; max-width: 560px; }

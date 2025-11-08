@@ -1,0 +1,29 @@
+{% load static %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/pages/courts.css' %}">{% endblock %}
+
+<html><head><link href="{% static 'css/base.css' %}" rel="stylesheet"/></head><body>{% extends "base.html" %}
+{% block content %}
+<h2>Quadras</h2>
+<table>
+<thead><tr><th>Nome</th><th>Tipo</th><th>Preço/h</th><th>Ativa</th><th>Ações</th></tr></thead>
+<tbody>
+  {% for c in courts %}
+    <tr>
+<td>{{ c.name }}</td>
+<td>{{ c.get_court_type_display }}</td>
+<td>{{ c.price_per_hour }}</td>
+<td>{{ c.is_active }}</td>
+<td><a href="{{ c.id }}/editar/">Editar</a></td>
+</tr>
+  {% empty %}
+    <tr><td colspan="5">Nenhuma quadra.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+<p>
+<a href="novo/">Nova Quadra</a> |
+  <a href="funcionamento/novo/">Adicionar Faixa de Funcionamento</a> |
+  <a href="bloqueio/novo/">Adicionar Bloqueio</a>
+</p>
+{% endblock %}
+</body></html>
