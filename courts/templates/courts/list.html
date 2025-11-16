@@ -1,29 +1,52 @@
+{% extends "base.html" %}
 {% load static %}
-{% block extra_css %}<link rel="stylesheet" href="{% static 'css/pages/courts.css' %}">{% endblock %}
 
-<html><head><link href="{% static 'css/base.css' %}" rel="stylesheet"/></head><body>{% extends "base.html" %}
-{% block content %}
-<h2>Quadras</h2>
-<table>
-<thead><tr><th>Nome</th><th>Tipo</th><th>Preço/h</th><th>Ativa</th><th>Ações</th></tr></thead>
-<tbody>
-  {% for c in courts %}
-    <tr>
-<td>{{ c.name }}</td>
-<td>{{ c.get_court_type_display }}</td>
-<td>{{ c.price_per_hour }}</td>
-<td>{{ c.is_active }}</td>
-<td><a href="{{ c.id }}/editar/">Editar</a></td>
-</tr>
-  {% empty %}
-    <tr><td colspan="5">Nenhuma quadra.</td></tr>
-  {% endfor %}
-  </tbody>
-</table>
-<p>
-<a href="novo/">Nova Quadra</a> |
-  <a href="funcionamento/novo/">Adicionar Faixa de Funcionamento</a> |
-  <a href="bloqueio/novo/">Adicionar Bloqueio</a>
-</p>
+{% block title %}Quadras - SRQ{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/pages/courts.css' %}">
 {% endblock %}
-</body></html>
+
+{% block content %}
+<div class="card">
+  <div class="card-header-row" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+    <h1>Quadras</h1>
+    {% if user.is_staff %}
+      <div class="actions" style="display:flex;gap:8px;flex-wrap:wrap;">
+        <a href="{% url 'court_create' %}" class="btn">Nova Quadra</a>
+        <a href="{% url 'openinghour_create' %}" class="btn">Faixa de Funcionamento</a>
+        <a href="{% url 'block_create' %}" class="btn">Novo Bloqueio</a>
+      </div>
+    {% endif %}
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Modalidade</th>
+        <th>Preço/hora</th>
+        <th>Ativa</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for c in courts %}
+        <tr>
+          <td>{{ c.name }}</td>
+          <td>{{ c.get_court_type_display }}</td>
+          <td>R$ {{ c.price_per_hour }}</td>
+          <td>{{ c.is_active|yesno:"Sim,Não" }}</td>
+          <td>
+            <a href="{% url 'court_edit' c.id %}">Editar</a>
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="5">Nenhuma quadra cadastrada.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

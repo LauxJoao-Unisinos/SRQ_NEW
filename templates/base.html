@@ -1,34 +1,53 @@
 {% load static %}
 <!DOCTYPE html>
-
 <html lang="pt-br">
-<head>
-<meta charset="utf-8"/>
-<title>{% block title %}SRQ{% endblock %}</title>
-<link href="{% static 'css/base.css' %}" rel="stylesheet"/><link rel="stylesheet" href="{% static 'css/base.css' %}">
-{% block extra_css %}{% endblock %}
-</head>
-<body>
-<header>
-<nav>
-<a href="/">Início</a>
-      {% if user.is_authenticated %}
-        <a href="/reservas/minhas/">Minhas Reservas</a>
-<a href="/logout/">Sair</a>
-      {% else %}
-        <a href="/login/">Entrar</a>
-<a href="/signup/">Criar conta</a>
-      {% endif %}
-      <a href="/courts/">Quadras</a>
-<a href="/reservas/disponibilidade/">Disponibilidade</a>
-</nav>
-</header>
-<hr/>
-  {% if messages %}
-    <ul>
-      {% for m in messages %}<li>{{ m }}</li>{% endfor %}
-    </ul>
-  {% endif %}
-  {% block content %}{% endblock %}
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <title>{% block title %}SRQ{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    {% block extra_css %}{% endblock %}
+  </head>
+  <body>
+    <div class="layout">
+      <header class="topbar">
+        <div class="topbar-inner">
+          <div class="brand">
+            <span class="brand-logo">SRQ</span>
+            <span class="brand-subtitle">Sistema de Reserva de Quadras</span>
+          </div>
+          <nav class="nav">
+            <a href="/">Início</a>
+            <a href="/courts/">Quadras</a>
+            <a href="/reservas/disponibilidade/">Disponibilidade</a>
+
+            {% if user.is_authenticated %}
+              <a href="/reservas/minhas/">Minhas Reservas</a>
+              <a href="/logout/">Sair</a>
+            {% else %}
+              <a href="/login/">Entrar</a>
+              <a href="/signup/">Criar conta</a>
+            {% endif %}
+          </nav>
+        </div>
+      </header>
+
+      <main class="container">
+        {% if messages %}
+          <ul class="messages">
+            {% for m in messages %}
+              <li>{{ m }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+      </main>
+
+      <footer class="footer">
+        <span>© {% now "Y" %} SRQ</span>
+        <span>Desenvolvido para gestão de reservas de quadras</span>
+      </footer>
+    </div>
+  </body>
 </html>

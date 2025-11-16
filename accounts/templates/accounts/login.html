@@ -1,12 +1,28 @@
+{% extends "base.html" %}
 {% load static %}
-{% block extra_css %}<link rel="stylesheet" href="{% static 'css/pages/auth.css' %}">{% endblock %}
 
-<html><head><link href="{% static 'css/base.css' %}" rel="stylesheet"/></head><body>{% extends "base.html" %}
-{% block content %}
-<h2>Entrar</h2>
-<form method="post">{% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Entrar</button>
-</form>
+{% block title %}Entrar - SRQ{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/pages/auth.css' %}">
 {% endblock %}
-</body></html>
+
+{% block content %}
+<div class="auth-page">
+  <div class="auth-card card">
+    <h1>Entrar</h1>
+    <p class="auth-subtitle">Acesse sua conta para gerenciar suas reservas.</p>
+
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Entrar</button>
+    </form>
+
+    <p class="auth-footer">
+      Ainda não tem conta?
+      <a href="/signup/">Criar conta</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

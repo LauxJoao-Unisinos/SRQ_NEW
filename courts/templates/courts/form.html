@@ -1,12 +1,21 @@
+{% extends "base.html" %}
 {% load static %}
-{% block extra_css %}<link rel="stylesheet" href="{% static 'css/pages/courts.css' %}">{% endblock %}
 
-<html><head><link href="{% static 'css/base.css' %}" rel="stylesheet"/></head><body>{% extends "base.html" %}
-{% block content %}
-<h2>{{ title }}</h2>
-<form method="post">{% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Salvar</button>
-</form>
+{% block title %}{{ title }} - Quadras - SRQ{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/pages/courts.css' %}">
 {% endblock %}
-</body></html>
+
+{% block content %}
+<div class="card">
+  <h1>{{ title }}</h1>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Salvar</button>
+    <a href="{% url 'court_list' %}" class="btn">Voltar</a>
+  </form>
+</div>
+{% endblock %}

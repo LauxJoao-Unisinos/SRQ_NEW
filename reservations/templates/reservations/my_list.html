@@ -1,19 +1,40 @@
+{% extends "base.html" %}
 {% load static %}
-{% block extra_css %}<link rel="stylesheet" href="{% static 'css/pages/reservations.css' %}">{% endblock %}
 
-<html><head><link href="{% static 'css/base.css' %}" rel="stylesheet"/></head><body>{% extends "base.html" %}
-{% block content %}
-<h2>Minhas Reservas</h2>
-<table>
-<thead><tr><th>Quadra</th><th>Início</th><th>Fim</th></tr></thead>
-<tbody>
-  {% for r in reservations %}
-    <tr><td>{{ r.court.name }}</td><td>{{ r.start }}</td><td>{{ r.end }}</td></tr>
-  {% empty %}
-    <tr><td colspan="3">Nenhuma reserva.</td></tr>
-  {% endfor %}
-  </tbody>
-</table>
-<p><a href="/reservas/nova/">Nova Reserva</a></p>
+{% block title %}Minhas Reservas - SRQ{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/pages/reservations.css' %}">
 {% endblock %}
-</body></html>
+
+{% block content %}
+<div class="card">
+  <div class="card-header-row" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+    <h1>Minhas Reservas</h1>
+    <a href="{% url 'reservation_create' %}" class="btn">Nova Reserva</a>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Quadra</th>
+        <th>Início</th>
+        <th>Fim</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in reservations %}
+        <tr>
+          <td>{{ r.court.name }}</td>
+          <td>{{ r.start|date:"d/m/Y H:i" }}</td>
+          <td>{{ r.end|date:"d/m/Y H:i" }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="3">Nenhuma reserva.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

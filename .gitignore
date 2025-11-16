@@ -3,6 +3,12 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+*.log
+*.pot
+db.sqlite3
+local_settings.py
+**/migrations/*.pyc
+
 # C extensions
 *.so
 
