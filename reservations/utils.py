@@ -11,9 +11,17 @@ def get_available_slots(court, date, duration_minutes=60):
     # Construir janelas válidas a partir do funcionamento
     windows = []
     for oh in OpeningHour.objects.filter(court=court, weekday=weekday):
-        start_dt = tz.localize(datetime.combine(date, oh.start_time))
-        end_dt = tz.localize(datetime.combine(date, oh.end_time))
+        start_dt = datetime.combine(date, oh.start_time)
+        end_dt = datetime.combine(date, oh.end_time)
+
+        # Deixa os datetimes "aware" com o timezone do Django
+        if timezone.is_naive(start_dt):
+            start_dt = timezone.make_aware(start_dt, tz)
+        if timezone.is_naive(end_dt):
+            end_dt = timezone.make_aware(end_dt, tz)
+
         windows.append((start_dt, end_dt))
+
     # Remover bloqueios e reservas
     blocks = list(Block.objects.filter(court=court, start__date=date) |
                   Block.objects.filter(court=court, end__date=date))

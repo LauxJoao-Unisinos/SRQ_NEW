@@ -5,9 +5,19 @@ from courts.models import Court
 from .models import Reservation
 
 class AvailabilityForm(forms.Form):
-    date = forms.DateField(widget=forms.DateInput(attrs={"type":"date"}))
-    court = forms.ModelChoiceField(queryset=Court.objects.filter(is_active=True), required=False)
-    duration_minutes = forms.IntegerField(min_value=30, initial=60)
+    date = forms.DateField(widget=forms.DateInput(attrs={"type": "date"}))
+    court = forms.ModelChoiceField(
+        queryset=Court.objects.filter(is_active=True),
+        required=True,
+        label="Quadra"
+    )
+    duration_minutes = forms.IntegerField(
+        min_value=30,
+        max_value=120,
+        initial=60,
+        label="Duração (minutos)"
+    )
+
 
 class ReservationForm(forms.ModelForm):
     class Meta:

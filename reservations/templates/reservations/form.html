@@ -11,10 +11,56 @@
 <div class="card">
   <h1>{{ title }}</h1>
 
-  <form method="post">
-    {% csrf_token %}
+  {# 1ª parte: escolher quadra + data + duração #}
+  <form method="get" style="margin-bottom: 20px;">
     {{ form.as_p }}
-    <button type="submit">Reservar</button>
+    <button type="submit">Ver horários disponíveis</button>
   </form>
+
+  {# Se houver slots calculados, mostramos a 2ª parte #}
+  {% if selected and slots %}
+    <hr style="margin: 20px 0; border-color: #111827;">
+
+    <h2>Horários disponíveis</h2>
+    <p>
+      Quadra: <strong>{{ selected.court.name }}</strong><br>
+      Data: <strong>{{ selected.date|date:"d/m/Y" }}</strong><br>
+      Duração: <strong>{{ selected.duration_minutes }} minutos</strong>
+    </p>
+
+    <form method="post" style="margin-top: 12px;">
+      {% csrf_token %}
+
+      {# mantemos os parâmetros originais escondidos #}
+      <input type="hidden" name="court" value="{{ selected.court.id }}">
+      <input type="hidden" name="date" value="{{ selected.date|date:"Y-m-d" }}">
+      <input type="hidden" name="duration_minutes" value="{{ selected.duration_minutes }}">
+
+      <div style="display:grid;gap:8px;margin-top:10px;">
+        {% for s, e in slots %}
+          {# usamos ISO 8601 compacto para reconstruir no backend #}
+          {% with s_iso=s|date:"Y-m-d\\TH:i" e_iso=e|date:"Y-m-d\\TH:i" %}
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+              <input type="radio" name="slot" value="{{ s_iso }}|{{ e_iso }}" required>
+              <span>{{ s|date:"H:i" }} — {{ e|date:"H:i" }}</span>
+            </label>
+          {% endwith %}
+        {% empty %}
+          <p>Nenhum horário disponível nessa data com essa duração.</p>
+        {% endfor %}
+      </div>
+
+      <button type="submit" style="margin-top: 12px;">Confirmar reserva</button>
+    </form>
+  {% elif selected %}
+    <p>Nenhum horário disponível para essa data/configuração.</p>
+  {% endif %}
+
+  {% if res_form_errors %}
+    <div class="messages" style="margin-top:16px;">
+      <strong>Não foi possível criar a reserva:</strong>
+      {{ res_form_errors }}
+    </div>
+  {% endif %}
 </div>
 {% endblock %}
