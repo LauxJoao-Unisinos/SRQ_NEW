@@ -8,13 +8,13 @@ SLOT_MINUTES = 30
 def get_available_slots(court, date, duration_minutes=60):
     tz = timezone.get_current_timezone()
     weekday = date.weekday()  # 0=Mon
-    # Construir janelas válidas a partir do funcionamento
+    # janelas válidas a partir do funcionamento
     windows = []
     for oh in OpeningHour.objects.filter(court=court, weekday=weekday):
         start_dt = datetime.combine(date, oh.start_time)
         end_dt = datetime.combine(date, oh.end_time)
 
-        # Deixa os datetimes "aware" com o timezone do Django
+        # timezone do Django
         if timezone.is_naive(start_dt):
             start_dt = timezone.make_aware(start_dt, tz)
         if timezone.is_naive(end_dt):
@@ -22,12 +22,12 @@ def get_available_slots(court, date, duration_minutes=60):
 
         windows.append((start_dt, end_dt))
 
-    # Remover bloqueios e reservas
+    # bloqueios e reservas
     blocks = list(Block.objects.filter(court=court, start__date=date) |
                   Block.objects.filter(court=court, end__date=date))
     resvs = list(Reservation.objects.filter(court=court, start__date=date) |
                  Reservation.objects.filter(court=court, end__date=date))
-    # Gerar slots discretizados
+    # slots 
     slots = []
     step = timedelta(minutes=SLOT_MINUTES)
     dur = timedelta(minutes=duration_minutes)
