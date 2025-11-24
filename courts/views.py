@@ -50,9 +50,17 @@ def block_create(request):
     if request.method == "POST":
         form = BlockForm(request.POST)
         if form.is_valid():
-            # validação simples de sobreposição pode ser adicionada aqui
             form.save()
             return redirect("court_list")
     else:
         form = BlockForm()
-    return render(request, "courts/form.html", {"form": form, "title": "Bloqueio"})
+
+    return render(
+        request,
+        "courts/form.html",
+        {
+            "form": form,
+            "title": "Bloqueio de horário",
+        },
+    )
+
