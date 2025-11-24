@@ -1,11 +1,11 @@
-# SRQ — Sistema de Reserva de Quadras (Sprint 1)
+# SRQ — Sistema de Reserva de Quadras 
 
 Esta pasta contém apenas os itens da Sprint 1: UC01, UC02, UC03, UC04, UC05, UC06, UC09.
 
 ## Stack
 - Django 4.2
 - MySQL (via `mysqlclient`) — configure via variáveis de ambiente
-- Sem CSS (apenas HTML básico nos templates)
+- CSS 
 
 ## Configuração rápida
 1. Crie um virtualenv e instale dependências:
